@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>ProBet Tips</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-primary: #0f0f1e;
+        --bg-secondary: #1a1a2e;
+        --bg-card: #16213e;
+        --accent-gold: #ffd700;
+        --accent-green: #00d084;
+        --accent-red: #ff4757;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --border: #2d2d44;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 16px;
+        padding-bottom: 80px;
+      }
+
+      /* Header */
+      .header {
+        text-align: center;
+        padding: 20px 0;
+        position: relative;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 215, 0, 0.1) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      /* Stats Bar */
+      .stats-bar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 20px 0;
+      }
+
+      .stat-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 8px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--accent-gold);
+      }
+
+      .stat-label {
+        font-size: 11px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+
+      /* Section Headers */
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 24px 0 16px;
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .badge {
+        background: var(--accent-gold);
+        color: var(--bg-primary);
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-weight: 600;
+      }
+
+      .badge-free {
+        background: var(--accent-green);
+      }
+
+      /* Category Grid */
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .category-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .category-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-gold), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .category-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent-gold);
+      }
+
+      .category-card:hover::before {
+        opacity: 1;
+      }
+
+      .category-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+
+      .category-name {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .category-count {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 4px;
+      }
+
+      /* Tips List */
+      .tips-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .tip-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .tip-card.premium {
+        border-color: var(--accent-gold);
+        background: linear-gradient(
+          135deg,
+          var(--bg-card) 0%,
+          rgba(255, 215, 0, 0.05) 100%
+        );
+      }
+
+      .tip-card.won {
+        border-color: var(--accent-green);
+      }
+
+      .tip-card.lost {
+        border-color: var(--accent-red);
+        opacity: 0.7;
+      }
+
+      .tip-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 12px;
+      }
+
+      .tip-league {
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .tip-status {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .status-pending {
+        background: #3d3d5c;
+        color: #fff;
+      }
+      .status-won {
+        background: var(--accent-green);
+        color: #fff;
+      }
+      .status-lost {
+        background: var(--accent-red);
+        color: #fff;
+      }
+
+      .tip-teams {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        line-height: 1.4;
+      }
+
+      .tip-prediction {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-secondary);
+        padding: 12px;
+        border-radius: 12px;
+        margin-top: 12px;
+      }
+
+      .prediction-text {
+        font-weight: 600;
+        color: var(--accent-gold);
+      }
+
+      .prediction-odds {
+        background: var(--bg-primary);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .tip-meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .tip-meta span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* Premium Banner */
+      .premium-banner {
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d2b00 100%);
+        border: 1px solid var(--accent-gold);
+        border-radius: 20px;
+        padding: 24px;
+        margin: 24px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .premium-banner::before {
+        content: "👑";
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        font-size: 100px;
+        opacity: 0.1;
+      }
+
+      .premium-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .premium-features {
+        text-align: left;
+        margin: 16px 0;
+        font-size: 14px;
+      }
+
+      .premium-features li {
+        margin: 8px 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .premium-btn {
+        background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
+        color: var(--bg-primary);
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: transform 0.2s;
+      }
+
+      .premium-btn:hover {
+        transform: scale(1.02);
+      }
+
+      /* Bottom Nav */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border);
+        padding: 12px;
+        display: flex;
+        justify-content: space-around;
+        z-index: 1000;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 12px;
+        transition: color 0.3s;
+      }
+
+      .nav-item.active {
+        color: var(--accent-gold);
+      }
+
+      .nav-icon {
+        font-size: 24px;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--bg-secondary);
+        border-radius: 20px;
+        padding: 24px;
+        max-width: 400px;
+        width: 100%;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .detail-label {
+        color: var(--text-secondary);
+      }
+
+      .detail-value {
+        font-weight: 600;
+      }
+
+      .result-positive {
+        color: var(--accent-green);
+      }
+      .result-negative {
+        color: var(--accent-red);
+      }
+
+      /* Loading */
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-secondary);
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--border);
+        border-top-color: var(--accent-gold);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-secondary);
+      }
+
+      .empty-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">⚽ ProBet Tips</div>
+        <div class="subtitle">Professional Sports Betting Insights</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat-card">
+          <div class="stat-value" id="winRate">68%</div>
+          <div class="stat-label">Win Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="profit">+142</div>
+          <div class="stat-label">Units Profit</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="activeTips">12</div>
+          <div class="stat-label">Active Tips</div>
+        </div>
+      </div>
+
+      <!-- Free Categories -->
+      <div class="section-header">
+        <div class="section-title">
+          🎯 Free Categories
+          <span class="badge badge-free">FREE</span>
+        </div>
+      </div>
+
+      <div class="category-grid" id="freeCategories">
+        <div class="category-card" onclick="filterTips('Daily Sure')">
+          <div class="category-icon">🔥</div>
+          <div class="category-name">Daily Sure</div>
+          <div class="category-count">3 tips today</div>
+        </div>
+        <div class="category-card" onclick="filterTips('Football')">
+          <div class="category-icon">⚽</div>
+          <div class="category-name">Football</div>
+          <div class="category-count">5 tips today</div>
+        </div>
+        <div class="category-card" onclick="filterTips('Over-Under')">
+          <div class="category-icon">📊</div>
+          <div class="category-name">Over-Under</div>
+          <div class="category-count">2 tips today</div>
+        </div>
+        <div class="category-card" onclick="filterTips('Single')">
+          <div class="category-icon">🎯</div>
+          <div class="category-name">Single Tips</div>
+          <div class="category-count">4 tips today</div>
+        </div>
+        <div class="category-card" onclick="filterTips('Basketball')">
+          <div class="category-icon">🏀</div>
+          <div class="category-name">Basketball</div>
+          <div class="category-count">2 tips today</div>
+        </div>
+        <div class="category-card" onclick="filterTips('Tennis')">
+          <div class="category-icon">🎾</div>
+          <div class="category-name">Tennis</div>
+          <div class="category-count">1 tip today</div>
+        </div>
+      </div>
+
+      <!-- VIP Section -->
+      <div class="section-header">
+        <div class="section-title">
+          💎 VIP Categories
+          <span class="badge">PREMIUM</span>
+        </div>
+      </div>
+
+      <div class="category-grid" id="vipCategories">
+        <div class="category-card" onclick="checkPremium('Special VIP')">
+          <div class="category-icon">⭐</div>
+          <div class="category-name">Special VIP</div>
+          <div class="category-count">🔒 Locked</div>
+        </div>
+        <div class="category-card" onclick="checkPremium('Fixed VIP')">
+          <div class="category-icon">🔒</div>
+          <div class="category-name">Fixed VIP</div>
+          <div class="category-count">🔒 Locked</div>
+        </div>
+        <div class="category-card" onclick="checkPremium('Correct Score')">
+          <div class="category-icon">🎯</div>
+          <div class="category-name">Correct Score</div>
+          <div class="category-count">🔒 Locked</div>
+        </div>
+        <div class="category-card" onclick="checkPremium('HT-FT')">
+          <div class="category-icon">⏱️</div>
+          <div class="category-name">HT-FT VIP</div>
+          <div class="category-count">🔒 Locked</div>
+        </div>
+      </div>
+
+      <!-- Premium Banner (if not premium) -->
+      <div class="premium-banner" id="premiumBanner">
+        <div class="premium-title">Upgrade to VIP</div>
+        <p style="color: var(--text-secondary); margin-bottom: 16px">
+          Unlock exclusive high-accuracy tips
+        </p>
+
+        <ul class="premium-features">
+          <li>✅ Access to all VIP categories</li>
+          <li>✅ Higher stake recommendations (5-10 units)</li>
+          <li>✅ 75%+ win rate on VIP tips</li>
+          <li>✅ Early access to daily tips</li>
+          <li>✅ Direct support from experts</li>
+        </ul>
+
+        <button class="premium-btn" onclick="upgradePremium()">
+          Get Premium - $29.99/month
+        </button>
+      </div>
+
+      <!-- Recent Tips -->
+      <div class="section-header">
+        <div class="section-title">📋 Recent Tips</div>
+        <span
+          style="color: var(--text-secondary); font-size: 14px; cursor: pointer"
+          onclick="showAllTips()"
+          >View All →</span
+        >
+      </div>
+
+      <div class="tips-list" id="tipsList">
+        <div class="loading">
+          <div class="spinner"></div>
+          Loading tips...
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a href="#" class="nav-item active" onclick="showSection('home')">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('tips')">
+        <span class="nav-icon">🎯</span>
+        <span>Tips</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('history')">
+        <span class="nav-icon">📊</span>
+        <span>History</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('profile')">
+        <span class="nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+    </div>
+
+    <!-- Tip Detail Modal -->
+    <div class="modal" id="tipModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">Tip Details</div>
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modalBody">
+          <!-- Dynamic content -->
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
