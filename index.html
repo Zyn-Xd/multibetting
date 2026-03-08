@@ -2,16 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>ProBet Tips</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Betting Tips</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
     <style>
       * {
         margin: 0;
@@ -20,94 +13,80 @@
       }
 
       :root {
-        --bg-primary: #0f0f1e;
-        --bg-secondary: #1a1a2e;
-        --bg-card: #16213e;
-        --accent-gold: #ffd700;
-        --accent-green: #00d084;
-        --accent-red: #ff4757;
+        --bg-primary: #000000;
+        --bg-secondary: #0a0a0a;
+        --bg-card: #111111;
+        --bg-hover: #1a1a1a;
         --text-primary: #ffffff;
-        --text-secondary: #a0a0a0;
-        --border: #2d2d44;
+        --text-secondary: #888888;
+        --border: #222222;
+        --accent: #ffffff;
+        --success: #ffffff;
+        --danger: #666666;
       }
 
       body {
-        font-family: "Inter", sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
         background: var(--bg-primary);
         color: var(--text-primary);
         min-height: 100vh;
-        overflow-x: hidden;
+        line-height: 1.6;
       }
 
       .container {
         max-width: 480px;
         margin: 0 auto;
-        padding: 16px;
-        padding-bottom: 80px;
+        padding: 20px;
       }
 
       /* Header */
       .header {
         text-align: center;
-        padding: 20px 0;
-        position: relative;
-      }
-
-      .header::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(
-          circle,
-          rgba(255, 215, 0, 0.1) 0%,
-          transparent 70%
-        );
-        pointer-events: none;
+        padding: 40px 20px;
+        border-bottom: 1px solid var(--border);
       }
 
       .logo {
-        font-size: 28px;
-        font-weight: 700;
-        background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -1px;
         margin-bottom: 8px;
       }
 
       .subtitle {
         color: var(--text-secondary);
         font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
       }
 
       /* Stats Bar */
       .stats-bar {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin: 20px 0;
+        gap: 1px;
+        background: var(--border);
+        margin: 0 -20px;
       }
 
-      .stat-card {
-        background: var(--bg-secondary);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 16px 8px;
+      .stat-box {
+        background: var(--bg-primary);
+        padding: 24px 10px;
         text-align: center;
       }
 
       .stat-value {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
-        color: var(--accent-gold);
+        color: var(--text-primary);
       }
 
       .stat-label {
         font-size: 11px;
         color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
         margin-top: 4px;
       }
 
@@ -116,28 +95,33 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 24px 0 16px;
+        margin: 32px 0 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
       }
 
       .section-title {
-        font-size: 20px;
+        font-size: 14px;
         font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text-secondary);
       }
 
       .badge {
-        background: var(--accent-gold);
+        background: var(--text-primary);
         color: var(--bg-primary);
-        font-size: 11px;
-        padding: 4px 8px;
-        border-radius: 20px;
-        font-weight: 600;
+        font-size: 10px;
+        padding: 4px 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
-      .badge-free {
-        background: var(--accent-green);
+      .badge-outline {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--text-primary);
       }
 
       /* Category Grid */
@@ -145,54 +129,38 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
-        margin-bottom: 24px;
+        margin-bottom: 32px;
       }
 
       .category-card {
         background: var(--bg-card);
         border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 20px;
+        padding: 24px 16px;
         text-align: center;
         cursor: pointer;
         transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .category-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--accent-gold), transparent);
-        opacity: 0;
-        transition: opacity 0.3s;
       }
 
       .category-card:hover {
-        transform: translateY(-2px);
-        border-color: var(--accent-gold);
-      }
-
-      .category-card:hover::before {
-        opacity: 1;
+        background: var(--bg-hover);
+        border-color: var(--text-primary);
       }
 
       .category-icon {
-        font-size: 32px;
+        font-size: 28px;
         margin-bottom: 8px;
+        filter: grayscale(100%);
       }
 
       .category-name {
+        font-size: 13px;
         font-weight: 600;
-        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
       .category-count {
-        font-size: 12px;
+        font-size: 11px;
         color: var(--text-secondary);
         margin-top: 4px;
       }
@@ -207,101 +175,92 @@
       .tip-card {
         background: var(--bg-card);
         border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        padding: 20px;
         position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .tip-card:hover {
+        border-color: var(--text-secondary);
       }
 
       .tip-card.premium {
-        border-color: var(--accent-gold);
-        background: linear-gradient(
-          135deg,
-          var(--bg-card) 0%,
-          rgba(255, 215, 0, 0.05) 100%
-        );
+        border-color: var(--text-primary);
       }
 
       .tip-card.won {
-        border-color: var(--accent-green);
+        border-left: 3px solid var(--text-primary);
       }
 
       .tip-card.lost {
-        border-color: var(--accent-red);
-        opacity: 0.7;
+        border-left: 3px solid var(--danger);
+        opacity: 0.6;
       }
 
-      .tip-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        margin-bottom: 12px;
+      .premium-tag {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: var(--text-primary);
+        color: var(--bg-primary);
+        font-size: 9px;
+        padding: 4px 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
       .tip-league {
-        font-size: 12px;
-        color: var(--text-secondary);
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      .tip-status {
         font-size: 11px;
-        padding: 4px 8px;
-        border-radius: 20px;
-        font-weight: 600;
+        color: var(--text-secondary);
         text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
       }
 
-      .status-pending {
-        background: #3d3d5c;
-        color: #fff;
-      }
-      .status-won {
-        background: var(--accent-green);
-        color: #fff;
-      }
-      .status-lost {
-        background: var(--accent-red);
-        color: #fff;
-      }
-
-      .tip-teams {
+      .tip-match {
         font-size: 16px;
         font-weight: 600;
-        margin-bottom: 8px;
+        margin-bottom: 16px;
         line-height: 1.4;
       }
 
-      .tip-prediction {
+      .tip-prediction-box {
+        background: var(--bg-primary);
+        border: 1px solid var(--border);
+        padding: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--bg-secondary);
-        padding: 12px;
-        border-radius: 12px;
-        margin-top: 12px;
       }
 
-      .prediction-text {
+      .prediction-label {
+        font-size: 11px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+
+      .prediction-value {
+        font-size: 16px;
         font-weight: 600;
-        color: var(--accent-gold);
       }
 
-      .prediction-odds {
-        background: var(--bg-primary);
-        padding: 6px 12px;
-        border-radius: 8px;
+      .odds-box {
+        background: var(--bg-card);
+        border: 1px solid var(--text-primary);
+        padding: 8px 16px;
         font-weight: 700;
         font-size: 14px;
       }
 
       .tip-meta {
         display: flex;
-        gap: 16px;
-        margin-top: 12px;
+        gap: 20px;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
         font-size: 12px;
         color: var(--text-secondary);
       }
@@ -309,172 +268,114 @@
       .tip-meta span {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
+      }
+
+      .status {
+        text-transform: uppercase;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 4px 8px;
+        background: var(--bg-hover);
+      }
+
+      .status-pending {
+        color: var(--text-secondary);
+      }
+      .status-won {
+        background: var(--text-primary);
+        color: var(--bg-primary);
+      }
+      .status-lost {
+        background: var(--danger);
+        color: var(--text-primary);
       }
 
       /* Premium Banner */
       .premium-banner {
-        background: linear-gradient(135deg, #1a1a2e 0%, #2d2b00 100%);
-        border: 1px solid var(--accent-gold);
-        border-radius: 20px;
-        padding: 24px;
-        margin: 24px 0;
+        background: var(--bg-card);
+        border: 1px solid var(--text-primary);
+        padding: 32px 24px;
+        margin: 32px 0;
         text-align: center;
         position: relative;
-        overflow: hidden;
-      }
-
-      .premium-banner::before {
-        content: "👑";
-        position: absolute;
-        top: -20px;
-        right: -20px;
-        font-size: 100px;
-        opacity: 0.1;
       }
 
       .premium-title {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
         margin-bottom: 8px;
-        background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+      }
+
+      .premium-price {
+        font-size: 36px;
+        font-weight: 800;
+        margin: 16px 0;
       }
 
       .premium-features {
         text-align: left;
-        margin: 16px 0;
-        font-size: 14px;
+        margin: 24px 0;
+        list-style: none;
       }
 
       .premium-features li {
-        margin: 8px 0;
-        list-style: none;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
       }
 
-      .premium-btn {
-        background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
+      .premium-features li:before {
+        content: "✓";
+        font-weight: 700;
+      }
+
+      .btn-primary {
+        background: var(--text-primary);
         color: var(--bg-primary);
         border: none;
         padding: 16px 32px;
-        border-radius: 12px;
+        font-size: 14px;
         font-weight: 700;
-        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         cursor: pointer;
         width: 100%;
-        transition: transform 0.2s;
+        transition: all 0.3s;
       }
 
-      .premium-btn:hover {
-        transform: scale(1.02);
+      .btn-primary:hover {
+        background: var(--text-secondary);
       }
 
-      /* Bottom Nav */
-      .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: var(--bg-secondary);
-        border-top: 1px solid var(--border);
-        padding: 12px;
-        display: flex;
-        justify-content: space-around;
-        z-index: 1000;
+      .btn-outline {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--text-primary);
       }
 
-      .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 12px;
-        transition: color 0.3s;
+      .btn-outline:hover {
+        background: var(--text-primary);
+        color: var(--bg-primary);
       }
 
-      .nav-item.active {
-        color: var(--accent-gold);
-      }
-
-      .nav-icon {
-        font-size: 24px;
-      }
-
-      /* Modal */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 2000;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
-
-      .modal.active {
-        display: flex;
-      }
-
-      .modal-content {
-        background: var(--bg-secondary);
-        border-radius: 20px;
-        padding: 24px;
-        max-width: 400px;
-        width: 100%;
-        max-height: 80vh;
-        overflow-y: auto;
-      }
-
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .modal-title {
-        font-size: 20px;
-        font-weight: 700;
-      }
-
-      .close-btn {
-        background: none;
-        border: none;
-        color: var(--text-secondary);
-        font-size: 24px;
-        cursor: pointer;
-      }
-
-      .detail-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .detail-label {
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
         color: var(--text-secondary);
       }
 
-      .detail-value {
-        font-weight: 600;
-      }
-
-      .result-positive {
-        color: var(--accent-green);
-      }
-      .result-negative {
-        color: var(--accent-red);
+      .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.5;
       }
 
       /* Loading */
@@ -487,11 +388,10 @@
       .spinner {
         width: 40px;
         height: 40px;
-        border: 3px solid var(--border);
-        border-top-color: var(--accent-gold);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
+        border: 2px solid var(--border);
+        border-top-color: var(--text-primary);
         margin: 0 auto 16px;
+        animation: spin 1s linear infinite;
       }
 
       @keyframes spin {
@@ -500,17 +400,39 @@
         }
       }
 
-      /* Empty State */
-      .empty-state {
-        text-align: center;
-        padding: 40px;
-        color: var(--text-secondary);
+      /* Bottom Nav */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary);
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 0;
+        z-index: 1000;
       }
 
-      .empty-icon {
-        font-size: 64px;
-        margin-bottom: 16px;
-        opacity: 0.5;
+      .nav-item {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        transition: color 0.3s;
+      }
+
+      .nav-item.active {
+        color: var(--text-primary);
+      }
+
+      .nav-icon {
+        font-size: 20px;
       }
     </style>
   </head>
@@ -518,169 +440,316 @@
     <div class="container">
       <!-- Header -->
       <div class="header">
-        <div class="logo">⚽ ProBet Tips</div>
-        <div class="subtitle">Professional Sports Betting Insights</div>
+        <div class="logo">BETTING TIPS</div>
+        <div class="subtitle">Professional Predictions</div>
       </div>
 
       <!-- Stats -->
       <div class="stats-bar">
-        <div class="stat-card">
-          <div class="stat-value" id="winRate">68%</div>
+        <div class="stat-box">
+          <div class="stat-value">68%</div>
           <div class="stat-label">Win Rate</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="profit">+142</div>
-          <div class="stat-label">Units Profit</div>
+        <div class="stat-box">
+          <div class="stat-value">+142</div>
+          <div class="stat-label">Profit</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-value" id="activeTips">12</div>
-          <div class="stat-label">Active Tips</div>
+        <div class="stat-box">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Active</div>
         </div>
       </div>
 
       <!-- Free Categories -->
       <div class="section-header">
-        <div class="section-title">
-          🎯 Free Categories
-          <span class="badge badge-free">FREE</span>
-        </div>
+        <div class="section-title">Free Categories</div>
+        <span class="badge badge-outline">FREE</span>
       </div>
 
-      <div class="category-grid" id="freeCategories">
+      <div class="category-grid">
         <div class="category-card" onclick="filterTips('Daily Sure')">
           <div class="category-icon">🔥</div>
           <div class="category-name">Daily Sure</div>
-          <div class="category-count">3 tips today</div>
+          <div class="category-count">3 tips</div>
         </div>
         <div class="category-card" onclick="filterTips('Football')">
           <div class="category-icon">⚽</div>
           <div class="category-name">Football</div>
-          <div class="category-count">5 tips today</div>
+          <div class="category-count">5 tips</div>
         </div>
         <div class="category-card" onclick="filterTips('Over-Under')">
           <div class="category-icon">📊</div>
           <div class="category-name">Over-Under</div>
-          <div class="category-count">2 tips today</div>
+          <div class="category-count">2 tips</div>
         </div>
         <div class="category-card" onclick="filterTips('Single')">
           <div class="category-icon">🎯</div>
-          <div class="category-name">Single Tips</div>
-          <div class="category-count">4 tips today</div>
-        </div>
-        <div class="category-card" onclick="filterTips('Basketball')">
-          <div class="category-icon">🏀</div>
-          <div class="category-name">Basketball</div>
-          <div class="category-count">2 tips today</div>
-        </div>
-        <div class="category-card" onclick="filterTips('Tennis')">
-          <div class="category-icon">🎾</div>
-          <div class="category-name">Tennis</div>
-          <div class="category-count">1 tip today</div>
+          <div class="category-name">Single</div>
+          <div class="category-count">4 tips</div>
         </div>
       </div>
 
-      <!-- VIP Section -->
+      <!-- VIP Categories -->
       <div class="section-header">
-        <div class="section-title">
-          💎 VIP Categories
-          <span class="badge">PREMIUM</span>
-        </div>
+        <div class="section-title">VIP Categories</div>
+        <span class="badge">PREMIUM</span>
       </div>
 
-      <div class="category-grid" id="vipCategories">
+      <div class="category-grid">
         <div class="category-card" onclick="checkPremium('Special VIP')">
           <div class="category-icon">⭐</div>
           <div class="category-name">Special VIP</div>
-          <div class="category-count">🔒 Locked</div>
+          <div class="category-count">Locked</div>
         </div>
         <div class="category-card" onclick="checkPremium('Fixed VIP')">
           <div class="category-icon">🔒</div>
           <div class="category-name">Fixed VIP</div>
-          <div class="category-count">🔒 Locked</div>
+          <div class="category-count">Locked</div>
         </div>
         <div class="category-card" onclick="checkPremium('Correct Score')">
           <div class="category-icon">🎯</div>
           <div class="category-name">Correct Score</div>
-          <div class="category-count">🔒 Locked</div>
+          <div class="category-count">Locked</div>
         </div>
         <div class="category-card" onclick="checkPremium('HT-FT')">
           <div class="category-icon">⏱️</div>
-          <div class="category-name">HT-FT VIP</div>
-          <div class="category-count">🔒 Locked</div>
+          <div class="category-name">HT-FT</div>
+          <div class="category-count">Locked</div>
         </div>
       </div>
 
-      <!-- Premium Banner (if not premium) -->
+      <!-- Premium Banner -->
       <div class="premium-banner" id="premiumBanner">
         <div class="premium-title">Upgrade to VIP</div>
-        <p style="color: var(--text-secondary); margin-bottom: 16px">
-          Unlock exclusive high-accuracy tips
-        </p>
+        <div class="premium-price">$29.99</div>
+        <div
+          style="
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          "
+        >
+          Per Month
+        </div>
 
         <ul class="premium-features">
-          <li>✅ Access to all VIP categories</li>
-          <li>✅ Higher stake recommendations (5-10 units)</li>
-          <li>✅ 75%+ win rate on VIP tips</li>
-          <li>✅ Early access to daily tips</li>
-          <li>✅ Direct support from experts</li>
+          <li>Access to all VIP categories</li>
+          <li>Higher stake recommendations</li>
+          <li>75%+ win rate on VIP tips</li>
+          <li>Early access to daily tips</li>
+          <li>Direct expert support</li>
         </ul>
 
-        <button class="premium-btn" onclick="upgradePremium()">
-          Get Premium - $29.99/month
+        <button class="btn-primary" onclick="upgradePremium()">
+          Get Premium
         </button>
       </div>
 
       <!-- Recent Tips -->
       <div class="section-header">
-        <div class="section-title">📋 Recent Tips</div>
+        <div class="section-title">Recent Tips</div>
         <span
-          style="color: var(--text-secondary); font-size: 14px; cursor: pointer"
+          style="
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+          "
           onclick="showAllTips()"
           >View All →</span
         >
       </div>
 
       <div class="tips-list" id="tipsList">
-        <div class="loading">
-          <div class="spinner"></div>
-          Loading tips...
-        </div>
+        <!-- Tips loaded dynamically -->
       </div>
+
+      <!-- Spacing for bottom nav -->
+      <div style="height: 80px"></div>
     </div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
       <a href="#" class="nav-item active" onclick="showSection('home')">
-        <span class="nav-icon">🏠</span>
+        <span class="nav-icon">⌂</span>
         <span>Home</span>
       </a>
       <a href="#" class="nav-item" onclick="showSection('tips')">
-        <span class="nav-icon">🎯</span>
+        <span class="nav-icon">⚽</span>
         <span>Tips</span>
       </a>
       <a href="#" class="nav-item" onclick="showSection('history')">
-        <span class="nav-icon">📊</span>
+        <span class="nav-icon">◈</span>
         <span>History</span>
       </a>
       <a href="#" class="nav-item" onclick="showSection('profile')">
-        <span class="nav-icon">👤</span>
+        <span class="nav-icon">○</span>
         <span>Profile</span>
       </a>
     </div>
 
-    <!-- Tip Detail Modal -->
-    <div class="modal" id="tipModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title">Tip Details</div>
-          <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-        <div id="modalBody">
-          <!-- Dynamic content -->
-        </div>
-      </div>
-    </div>
+    <script>
+      const tg = window.Telegram.WebApp;
+      tg.expand();
+      tg.ready();
 
-    <script src="app.js"></script>
+      // Theme
+      document.body.style.backgroundColor = "#000000";
+      tg.setBackgroundColor("#000000");
+      tg.setHeaderColor("#000000");
+
+      // Load tips
+      const tips = [
+        {
+          id: 1,
+          league: "Premier League",
+          match: "Manchester City vs Liverpool",
+          prediction: "Over 2.5 Goals",
+          odds: "1.85",
+          stake: 3,
+          confidence: 72,
+          premium: false,
+          status: "pending",
+        },
+        {
+          id: 2,
+          league: "NBA",
+          match: "Lakers vs Warriors",
+          prediction: "Lakers -4.5",
+          odds: "1.91",
+          stake: 2,
+          confidence: 65,
+          premium: false,
+          status: "won",
+          result: "Won",
+        },
+        {
+          id: 3,
+          league: "La Liga",
+          match: "Real Madrid vs Barcelona",
+          prediction: "Real Madrid Win",
+          odds: "2.10",
+          stake: 5,
+          confidence: 80,
+          premium: true,
+          status: "pending",
+        },
+      ];
+
+      function renderTips(tipList) {
+        const container = document.getElementById("tipsList");
+
+        if (tipList.length === 0) {
+          container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">◉</div>
+                        <div>No tips available</div>
+                    </div>
+                `;
+          return;
+        }
+
+        container.innerHTML = tipList
+          .map((tip) => {
+            const isLocked = tip.premium && !isPremium;
+            const statusClass =
+              tip.status === "won"
+                ? "won"
+                : tip.status === "lost"
+                ? "lost"
+                : "";
+            const premiumClass = tip.premium ? "premium" : "";
+
+            return `
+                    <div class="tip-card ${statusClass} ${premiumClass}" onclick="showTipDetail(${
+              tip.id
+            })">
+                        ${
+                          tip.premium
+                            ? '<span class="premium-tag">VIP</span>'
+                            : ""
+                        }
+                        <div class="tip-league">${tip.league}</div>
+                        <div class="tip-match">${tip.match}</div>
+                        
+                        <div class="tip-prediction-box">
+                            <div>
+                                <div class="prediction-label">Prediction</div>
+                                <div class="prediction-value">${
+                                  isLocked ? "🔒 Locked" : tip.prediction
+                                }</div>
+                            </div>
+                            <div class="odds-box">@${tip.odds}</div>
+                        </div>
+                        
+                        <div class="tip-meta">
+                            <span>◈ ${tip.confidence}%</span>
+                            <span>◉ ${tip.stake}/10</span>
+                            <span class="status status-${tip.status}">${
+              tip.status
+            }</span>
+                        </div>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      let isPremium = false;
+
+      function filterTips(category) {
+        const filtered = tips.filter(
+          (t) => t.league.includes(category) || t.sport === category
+        );
+        renderTips(filtered);
+      }
+
+      function checkPremium(category) {
+        if (!isPremium) {
+          tg.showPopup({
+            title: "Premium Required",
+            message: "Upgrade to VIP to access this category.",
+            buttons: [
+              { id: "upgrade", type: "default", text: "Upgrade" },
+              { type: "cancel" },
+            ],
+          });
+        }
+      }
+
+      function upgradePremium() {
+        tg.sendData(JSON.stringify({ action: "upgrade_premium" }));
+        tg.close();
+      }
+
+      function showAllTips() {
+        renderTips(tips);
+      }
+
+      function showSection(section) {
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((el) => el.classList.remove("active"));
+        event.target.closest(".nav-item").classList.add("active");
+
+        if (section === "home") renderTips(tips);
+        if (section === "history")
+          renderTips(tips.filter((t) => t.status !== "pending"));
+      }
+
+      function showTipDetail(id) {
+        const tip = tips.find((t) => t.id === id);
+        if (tip.premium && !isPremium) {
+          checkPremium();
+          return;
+        }
+        // Show detail modal or expand
+      }
+
+      // Initial render
+      renderTips(tips);
+    </script>
   </body>
 </html>
