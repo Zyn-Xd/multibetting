@@ -23,40 +23,14 @@ function setupTheme() {
   document.body.style.backgroundColor = tg.backgroundColor || "#0f0f1e";
 }
 
-// API Functions (mock - replace with your backend)
+// API Functions - Using mock data for standalone operation
 async function loadTips() {
-  try {
-    // Simulate API call - replace with actual endpoint
-    // For local development, use: http://localhost:5000/api/tips
-    // For production, deploy Flask backend and update the URL
-    const API_URL = window.location.origin + "/api/tips";
-
-    const response = await fetch(API_URL + `?user_id=${userId || ""}`);
-
-    if (!response.ok) {
-      throw new Error("API not available");
-    }
-
-    const data = await response.json();
-
-    currentTips = data.tips || getMockTips();
-    isPremium = data.is_premium || false;
-
-    renderTips(currentTips);
-    updateStats(data.stats);
-
-    if (isPremium) {
-      document.getElementById("premiumBanner").style.display = "none";
-      unlockVIPCateories();
-    }
-  } catch (error) {
-    console.log("Using offline mock data:", error.message);
-    // Use mock data when API is not available
-    currentTips = getMockTips();
-    isPremium = false;
-    renderTips(currentTips);
-    updateStats({ win_rate: 68, profit: 142, active_tips: 12 });
-  }
+  // Using mock data directly - no backend required
+  // To connect to backend, deploy Flask server and update this function
+  currentTips = getMockTips();
+  isPremium = false;
+  renderTips(currentTips);
+  updateStats({ win_rate: 90, profit: 142, active_tips: 12 });
 }
 
 async function checkUserStatus() {
@@ -124,7 +98,6 @@ function renderTips(tips) {
                 <div class="empty-icon">📭</div>
                 <div>No tips available right now</div>
                 <div style="font-size: 14px; margin-top: 8px;">Check back later for new predictions</div>
-            </div>
         `;
     return;
   }
@@ -158,7 +131,6 @@ function renderTips(tips) {
                         ${isLocked ? "🔒 Premium Only" : tip.prediction}
                     </div>
                     <div class="prediction-odds">@${tip.odds}</div>
-                </div>
                 
                 <div class="tip-meta">
                     <span>📊 ${tip.confidence}% confidence</span>
@@ -234,9 +206,6 @@ function showTipDetail(tipId) {
             <span class="detail-value">${tip.match_title}</span>
         </div>
         <div class="detail-row">
-                        <span class="detail-value">${tip.match_title}</span>
-        </div>
-        <div class="detail-row">
             <span class="detail-label">Prediction</span>
             <span class="detail-value" style="color: var(--accent-gold);">${
               tip.prediction
@@ -294,7 +263,6 @@ function showTipDetail(tipId) {
         <div style="margin-top: 16px; padding: 16px; background: var(--bg-primary); border-radius: 12px;">
             <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 8px;">Analysis</div>
             <div style="line-height: 1.6;">${tip.notes}</div>
-        </div>
         `
             : ""
         }
@@ -355,10 +323,8 @@ function showPremiumPrompt() {
   );
 }
 
-function upgradePremium() {
-  // Send command to bot to initiate payment
-  tg.sendData(JSON.stringify({ action: "upgrade_premium" }));
-  tg.close();
+function contactAdmin() {
+  tg.openTelegramLink("https://t.me/DrZyn");
 }
 
 function updateStats(stats) {
@@ -430,7 +396,6 @@ function showProfile() {
                 }; font-weight: 600;">
                     ${isPremium ? "💎 Premium Member" : "Free Member"}
                 </div>
-            </div>
             
             ${
               isPremium
@@ -438,7 +403,6 @@ function showProfile() {
             <div style="background: var(--bg-card); border-radius: 16px; padding: 20px; margin-bottom: 16px;">
                 <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">Premium Expires</div>
                 <div style="font-weight: 600;">2024-12-31</div>
-            </div>
             `
                 : `
             <button class="premium-btn" onclick="upgradePremium()" style="margin-top: 16px;">
