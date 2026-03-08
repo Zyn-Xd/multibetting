@@ -26,8 +26,7 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: var(--bg-primary);
         color: var(--text-primary);
         min-height: 100vh;
@@ -149,7 +148,6 @@
       .category-icon {
         font-size: 28px;
         margin-bottom: 8px;
-        filter: grayscale(100%);
       }
 
       .category-name {
@@ -280,17 +278,9 @@
         background: var(--bg-hover);
       }
 
-      .status-pending {
-        color: var(--text-secondary);
-      }
-      .status-won {
-        background: var(--text-primary);
-        color: var(--bg-primary);
-      }
-      .status-lost {
-        background: var(--danger);
-        color: var(--text-primary);
-      }
+      .status-pending { color: var(--text-secondary); }
+      .status-won { background: var(--text-primary); color: var(--bg-primary); }
+      .status-lost { background: var(--danger); color: var(--text-primary); }
 
       /* Premium Banner */
       .premium-banner {
@@ -354,17 +344,6 @@
         background: var(--text-secondary);
       }
 
-      .btn-outline {
-        background: transparent;
-        color: var(--text-primary);
-        border: 1px solid var(--text-primary);
-      }
-
-      .btn-outline:hover {
-        background: var(--text-primary);
-        color: var(--bg-primary);
-      }
-
       /* Empty State */
       .empty-state {
         text-align: center;
@@ -395,9 +374,7 @@
       }
 
       @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+        to { transform: rotate(360deg); }
       }
 
       /* Bottom Nav */
@@ -442,22 +419,18 @@
       <div class="header">
         <div class="logo">BETTING TIPS</div>
         <div class="subtitle">Professional Predictions</div>
-      </div>
 
       <!-- Stats -->
       <div class="stats-bar">
         <div class="stat-box">
-          <div class="stat-value">68%</div>
-          <div class="stat-label">Win Rate</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value">+142</div>
+          <div class="stat-value" id="profitValue">+142</div>
           <div class="stat-label">Profit</div>
-        </div>
         <div class="stat-box">
-          <div class="stat-value">12</div>
+          <div class="stat-value" id="dateValue">--</div>
+          <div class="stat-label">Date</div>
+        <div class="stat-box">
+          <div class="stat-value" id="activeValue">12</div>
           <div class="stat-label">Active</div>
-        </div>
       </div>
 
       <!-- Free Categories -->
@@ -470,23 +443,27 @@
         <div class="category-card" onclick="filterTips('Daily Sure')">
           <div class="category-icon">🔥</div>
           <div class="category-name">Daily Sure</div>
-          <div class="category-count">3 tips</div>
-        </div>
+          <div class="category-count" id="dailyCount">3 tips</div>
         <div class="category-card" onclick="filterTips('Football')">
           <div class="category-icon">⚽</div>
           <div class="category-name">Football</div>
-          <div class="category-count">5 tips</div>
-        </div>
+          <div class="category-count" id="footballCount">5 tips</div>
+        <div class="category-card" onclick="filterTips('Basketball')">
+          <div class="category-icon">🏀</div>
+          <div class="category-name">Basketball</div>
+          <div class="category-count" id="basketballCount">2 tips</div>
+        <div class="category-card" onclick="filterTips('Tennis')">
+          <div class="category-icon">🎾</div>
+          <div class="category-name">Tennis</div>
+          <div class="category-count" id="tennisCount">2 tips</div>
         <div class="category-card" onclick="filterTips('Over-Under')">
           <div class="category-icon">📊</div>
           <div class="category-name">Over-Under</div>
-          <div class="category-count">2 tips</div>
-        </div>
+          <div class="category-count" id="ouCount">2 tips</div>
         <div class="category-card" onclick="filterTips('Single')">
           <div class="category-icon">🎯</div>
           <div class="category-name">Single</div>
-          <div class="category-count">4 tips</div>
-        </div>
+          <div class="category-count" id="singleCount">4 tips</div>
       </div>
 
       <!-- VIP Categories -->
@@ -500,38 +477,25 @@
           <div class="category-icon">⭐</div>
           <div class="category-name">Special VIP</div>
           <div class="category-count">Locked</div>
-        </div>
         <div class="category-card" onclick="checkPremium('Fixed VIP')">
           <div class="category-icon">🔒</div>
           <div class="category-name">Fixed VIP</div>
           <div class="category-count">Locked</div>
-        </div>
         <div class="category-card" onclick="checkPremium('Correct Score')">
           <div class="category-icon">🎯</div>
           <div class="category-name">Correct Score</div>
           <div class="category-count">Locked</div>
-        </div>
         <div class="category-card" onclick="checkPremium('HT-FT')">
           <div class="category-icon">⏱️</div>
           <div class="category-name">HT-FT</div>
           <div class="category-count">Locked</div>
-        </div>
       </div>
 
       <!-- Premium Banner -->
       <div class="premium-banner" id="premiumBanner">
         <div class="premium-title">Upgrade to VIP</div>
         <div class="premium-price">$29.99</div>
-        <div
-          style="
-            color: var(--text-secondary);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-          "
-        >
-          Per Month
-        </div>
+        <div style="color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Per Month</div>
 
         <ul class="premium-features">
           <li>Access to all VIP categories</li>
@@ -541,25 +505,13 @@
           <li>Direct expert support</li>
         </ul>
 
-        <button class="btn-primary" onclick="upgradePremium()">
-          Get Premium
-        </button>
+        <button class="btn-primary" onclick="upgradePremium()">Get Premium</button>
       </div>
 
       <!-- Recent Tips -->
       <div class="section-header">
         <div class="section-title">Recent Tips</div>
-        <span
-          style="
-            color: var(--text-secondary);
-            font-size: 12px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-          "
-          onclick="showAllTips()"
-          >View All →</span
-        >
+        <span style="color: var(--text-secondary); font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;" onclick="showAllTips()">View All →</span>
       </div>
 
       <div class="tips-list" id="tipsList">
@@ -568,7 +520,6 @@
 
       <!-- Spacing for bottom nav -->
       <div style="height: 80px"></div>
-    </div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
@@ -600,109 +551,95 @@
       tg.setBackgroundColor("#000000");
       tg.setHeaderColor("#000000");
 
-      // Load tips
+      // Dynamic date
+      function getTodayDate() {
+        const today = new Date();
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        return today.toLocaleDateString('en-US', options);
+      }
+
+      // Update date on load
+      document.getElementById('dateValue').textContent = getTodayDate();
+
+      // Sample tips data
       const tips = [
-        {
-          id: 1,
-          league: "Premier League",
-          match: "Manchester City vs Liverpool",
-          prediction: "Over 2.5 Goals",
-          odds: "1.85",
-          stake: 3,
-          confidence: 72,
-          premium: false,
-          status: "pending",
-        },
-        {
-          id: 2,
-          league: "NBA",
-          match: "Lakers vs Warriors",
-          prediction: "Lakers -4.5",
-          odds: "1.91",
-          stake: 2,
-          confidence: 65,
-          premium: false,
-          status: "won",
-          result: "Won",
-        },
-        {
-          id: 3,
-          league: "La Liga",
-          match: "Real Madrid vs Barcelona",
-          prediction: "Real Madrid Win",
-          odds: "2.10",
-          stake: 5,
-          confidence: 80,
-          premium: true,
-          status: "pending",
-        },
+        { id: 1, sport: "Football", league: "Premier League", match: "Man City vs Liverpool", prediction: "Over 2.5 Goals", odds: "1.85", stake: 3, confidence: 72, premium: false, status: "pending", date: "Today" },
+        { id: 2, sport: "Basketball", league: "NBA", match: "Lakers vs Warriors", prediction: "Lakers -4.5", odds: "1.91", stake: 2, confidence: 65, premium: false, status: "won", result: "Won", date: "Yesterday" },
+        { id: 3, sport: "Tennis", league: "ATP", match: "Djokovic vs Nadal", prediction: "Djokovic Win", odds: "1.75", stake: 4, confidence: 78, premium: false, status: "pending", date: "Today" },
+        { id: 4, sport: "Football", league: "La Liga", match: "Real Madrid vs Barcelona", prediction: "Real Madrid Win", odds: "2.10", stake: 5, confidence: 80, premium: true, status: "pending", date: "Today" },
+        { id: 5, sport: "Basketball", league: "EuroLeague", match: "Barcelona vs Real", prediction: "Barcelona -3.5", odds: "1.88", stake: 3, confidence: 68, premium: false, status: "pending", date: "Today" },
+        { id: 6, sport: "Tennis", league: "WTA", match: "Swiatek vs Rybakina", prediction: "Over 20.5 Games", odds: "1.80", stake: 2, confidence: 62, premium: false, status: "lost", result: "Lost", date: "Yesterday" },
       ];
+
+      // Count tips by category
+      function updateCategoryCounts() {
+        const counts = {
+          'Daily Sure': tips.filter(t => t.status === 'pending').length,
+          'Football': tips.filter(t => t.sport === 'Football').length,
+          'Basketball': tips.filter(t => t.sport === 'Basketball').length,
+          'Tennis': tips.filter(t => t.sport === 'Tennis').length,
+          'Over-Under': tips.filter(t => t.prediction.includes('Over') || t.prediction.includes('Under')).length,
+          'Single': tips.filter(t => !t.premium).length
+        };
+
+        document.getElementById('dailyCount').textContent = counts['Daily Sure'] + ' tips';
+        document.getElementById('footballCount').textContent = counts['Football'] + ' tips';
+        document.getElementById('basketballCount').textContent = counts['Basketball'] + ' tips';
+        document.getElementById('tennisCount').textContent = counts['Tennis'] + ' tips';
+        document.getElementById('ouCount').textContent = counts['Over-Under'] + ' tips';
+        document.getElementById('singleCount').textContent = counts['Single'] + ' tips';
+
+        // Update active tips
+        document.getElementById('activeValue').textContent = tips.filter(t => t.status === 'pending').length;
+      }
+
+      // Initial counts
+      updateCategoryCounts();
 
       function renderTips(tipList) {
         const container = document.getElementById("tipsList");
 
         if (tipList.length === 0) {
-          container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">◉</div>
-                        <div>No tips available</div>
-                    </div>
-                `;
+          container.innerHTML = `<div class="empty-state"><div class="empty-icon">◉</div><div>No tips available</div>`;
           return;
         }
 
-        container.innerHTML = tipList
-          .map((tip) => {
-            const isLocked = tip.premium && !isPremium;
-            const statusClass =
-              tip.status === "won"
-                ? "won"
-                : tip.status === "lost"
-                ? "lost"
-                : "";
-            const premiumClass = tip.premium ? "premium" : "";
+        container.innerHTML = tipList.map((tip) => {
+          const isLocked = tip.premium && !isPremium;
+          const statusClass = tip.status === "won" ? "won" : tip.status === "lost" ? "lost" : "";
+          const premiumClass = tip.premium ? "premium" : "";
 
-            return `
-                    <div class="tip-card ${statusClass} ${premiumClass}" onclick="showTipDetail(${
-              tip.id
-            })">
-                        ${
-                          tip.premium
-                            ? '<span class="premium-tag">VIP</span>'
-                            : ""
-                        }
-                        <div class="tip-league">${tip.league}</div>
-                        <div class="tip-match">${tip.match}</div>
-                        
-                        <div class="tip-prediction-box">
-                            <div>
-                                <div class="prediction-label">Prediction</div>
-                                <div class="prediction-value">${
-                                  isLocked ? "🔒 Locked" : tip.prediction
-                                }</div>
-                            </div>
-                            <div class="odds-box">@${tip.odds}</div>
-                        </div>
-                        
-                        <div class="tip-meta">
-                            <span>◈ ${tip.confidence}%</span>
-                            <span>◉ ${tip.stake}/10</span>
-                            <span class="status status-${tip.status}">${
-              tip.status
-            }</span>
-                        </div>
-                    </div>
-                `;
-          })
-          .join("");
+          return `
+            <div class="tip-card ${statusClass} ${premiumClass}">
+              ${tip.premium ? '<span class="premium-tag">VIP</span>' : ''}
+              <div class="tip-league">${tip.league} • ${tip.date}</div>
+              <div class="tip-match">${tip.match}</div>
+              <div class="tip-prediction-box">
+                <div>
+                  <div class="prediction-label">Prediction</div>
+                  <div class="prediction-value">${isLocked ? '🔒 Locked' : tip.prediction}</div>
+                <div class="odds-box">@${tip.odds}</div>
+              <div class="tip-meta">
+                <span>◈ ${tip.confidence}%</span>
+                <span>◉ ${tip.stake}/10</span>
+                <span class="status status-${tip.status}">${tip.status}</span>
+              </div>
+          `;
+        }).join("");
       }
 
       let isPremium = false;
 
       function filterTips(category) {
-        const filtered = tips.filter(
-          (t) => t.league.includes(category) || t.sport === category
-        );
+        const filtered = tips.filter((t) => {
+          if (category === 'Daily Sure') return t.status === 'pending';
+          if (category === 'Football') return t.sport === 'Football';
+          if (category === 'Basketball') return t.sport === 'Basketball';
+          if (category === 'Tennis') return t.sport === 'Tennis';
+          if (category === 'Over-Under') return t.prediction.includes('Over') || t.prediction.includes('Under');
+          if (category === 'Single') return !t.premium;
+          return true;
+        });
         renderTips(filtered);
       }
 
@@ -711,10 +648,7 @@
           tg.showPopup({
             title: "Premium Required",
             message: "Upgrade to VIP to access this category.",
-            buttons: [
-              { id: "upgrade", type: "default", text: "Upgrade" },
-              { type: "cancel" },
-            ],
+            buttons: [{ id: "upgrade", type: "default", text: "Upgrade" }, { type: "cancel" }],
           });
         }
       }
@@ -729,23 +663,12 @@
       }
 
       function showSection(section) {
-        document
-          .querySelectorAll(".nav-item")
-          .forEach((el) => el.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
         event.target.closest(".nav-item").classList.add("active");
 
         if (section === "home") renderTips(tips);
-        if (section === "history")
-          renderTips(tips.filter((t) => t.status !== "pending"));
-      }
-
-      function showTipDetail(id) {
-        const tip = tips.find((t) => t.id === id);
-        if (tip.premium && !isPremium) {
-          checkPremium();
-          return;
-        }
-        // Show detail modal or expand
+        if (section === "tips") renderTips(tips.filter(t => t.status === "pending"));
+        if (section === "history") renderTips(tips.filter(t => t.status !== "pending"));
       }
 
       // Initial render
