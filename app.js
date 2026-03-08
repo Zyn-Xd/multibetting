@@ -327,6 +327,10 @@ function contactAdmin() {
   tg.openTelegramLink("https://t.me/DrZyn");
 }
 
+function contactAdmin() {
+  tg.openTelegramLink("https://t.me/DrZyn");
+}
+
 function updateStats(stats) {
   if (!stats) return;
   document.getElementById("winRate").textContent = stats.win_rate + "%";
