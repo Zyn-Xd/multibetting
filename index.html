@@ -1,162 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Betting Tips</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    :root { --bg-primary: #000000; --bg-card: #111111; --bg-hover: #1a1a1a; --text-primary: #ffffff; --text-secondary: #888888; --border: #222222; }
-    html, body { height: 100%; overflow: hidden; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); height: 100vh; line-height: 1.5; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
-    .container { max-width: 100%; margin: 0 auto; padding: 12px; padding-bottom: 70px; min-height: 100vh; }
-    .header { text-align: center; padding: 20px 12px; border-bottom: 1px solid var(--border); }
-    .logo { font-size: 24px; font-weight: 800; }
-    .subtitle { color: var(--text-secondary); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
-    .stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 0 -12px; }
-    .stat-box { background: var(--bg-primary); padding: 16px 4px; text-align: center; }
-    .stat-value { font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-    .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); }
-    .badge { background: var(--text-primary); color: var(--bg-primary); font-size: 8px; padding: 3px 6px; font-weight: 700; text-transform: uppercase; }
-    .badge-outline { background: transparent; color: var(--text-primary); border: 1px solid var(--text-primary); }
-    .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-    .category-card { background: var(--bg-card); border: 1px solid var(--border); padding: 14px 8px; text-align: center; cursor: pointer; border-radius: 8px; }
-    .category-card:active { background: var(--bg-hover); }
-    .category-icon { font-size: 22px; }
-    .category-name { font-size: 10px; font-weight: 600; text-transform: uppercase; margin-top: 4px; }
-    .category-count { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
-    .tips-list { display: flex; flex-direction: column; gap: 8px; }
-    .tip-card { background: var(--bg-card); border: 1px solid var(--border); padding: 12px; position: relative; border-radius: 8px; }
-    .tip-card.premium { border-color: var(--text-primary); }
-    .tip-card.won { border-left: 3px solid var(--text-primary); }
-    .tip-card.lost { border-left: 3px solid var(--text-secondary); opacity: 0.6; }
-    .premium-tag { position: absolute; top: 0; right: 0; background: var(--text-primary); color: var(--bg-primary); font-size: 7px; padding: 2px 6px; font-weight: 700; border-radius: 0 8px 0 4px; }
-    .tip-league { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; }
-    .tip-match { font-size: 13px; font-weight: 600; margin: 6px 0; }
-    .tip-prediction-box { background: var(--bg-primary); border: 1px solid var(--border); padding: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 6px; }
-    .prediction-label { font-size: 9px; color: var(--text-secondary); text-transform: uppercase; }
-    .prediction-value { font-size: 13px; font-weight: 600; }
-    .odds-box { background: var(--bg-card); border: 1px solid var(--text-primary); padding: 4px 10px; font-weight: 700; font-size: 12px; border-radius: 4px; }
-    .tip-meta { display: flex; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 10px; color: var(--text-secondary); }
-    .status { text-transform: uppercase; font-size: 8px; font-weight: 700; padding: 2px 5px; background: var(--bg-hover); border-radius: 3px; }
-    .status-pending { color: var(--text-secondary); }
-    .status-won { background: var(--text-primary); color: var(--bg-primary); }
-    .status-lost { background: var(--text-secondary); color: var(--bg-primary); }
-    .premium-banner { background: var(--bg-card); border: 1px solid var(--text-primary); padding: 18px 12px; margin: 20px 0; text-align: center; border-radius: 12px; }
-    .premium-title { font-size: 16px; font-weight: 700; text-transform: uppercase; }
-    .premium-price { font-size: 28px; font-weight: 800; margin: 10px 0; }
-    .premium-features { text-align: left; margin: 14px 0; list-style: none; font-size: 12px; }
-    .premium-features li { padding: 5px 0; border-bottom: 1px solid var(--border); }
-    .btn-primary { background: var(--text-primary); color: var(--bg-primary); border: none; padding: 12px 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; cursor: pointer; width: 100%; border-radius: 6px; }
-    .empty-state { text-align: center; padding: 30px; color: var(--text-secondary); font-size: 13px; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-primary); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
-    .nav-item { color: var(--text-secondary); text-decoration: none; font-size: 9px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-    .nav-item.active { color: var(--text-primary); }
-    .nav-icon { font-size: 16px; }
-  </style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>Betting Tips</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style type="text/css">
+@charset "utf-8";
+html, body { 
+  width: 100% !important; 
+  height: 100% !important; 
+  overflow: hidden !important;
+  position: fixed !important;
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root { --bg: #000; --card: #111; --text: #fff; --gray: #888; --border: #222; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+  background: var(--bg); color: var(--text); 
+  width: 100%; height: 100%; 
+  overflow-y: auto; overflow-x: hidden;
+}
+.wrap { width: 100%; height: 100%; display: flex; flex-direction: column; }
+.head { text-align: center; padding: 16px 10px; border-bottom: 1px solid var(--border); }
+.logo { font-size: 22px; font-weight: 800; }
+.sub { color: var(--gray); font-size: 9px; text-transform: uppercase; letter-spacing: 2px; }
+.stats { display: flex; border-bottom: 1px solid var(--border); }
+.stat { flex: 1; text-align: center; padding: 14px 4px; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.val { font-size: 18px; font-weight: 700; }
+.lbl { font-size: 8px; color: var(--gray); text-transform: uppercase; margin-top: 2px; }
+.sec { display: flex; justify-content: space-between; align-items: center; padding: 16px 10px 10px; }
+.tit { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--gray); letter-spacing: 1px; }
+.badge { background: var(--text); color: var(--bg); font-size: 7px; padding: 3px 6px; font-weight: 700; text-transform: uppercase; }
+.badge2 { background: transparent; color: var(--text); border: 1px solid var(--text); }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 10px 16px; }
+.grid2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 10px 16px; }
+.cat { background: var(--card); border: 1px solid var(--border); padding: 12px 4px; text-align: center; border-radius: 6px; }
+.cat:active { background: #1a1a1a; }
+.ico { font-size: 20px; }
+.name { font-size: 9px; font-weight: 600; text-transform: uppercase; margin-top: 4px; }
+.num { font-size: 8px; color: var(--gray); margin-top: 2px; }
+.banner { margin: 16px 10px; background: var(--card); border: 1px solid var(--text); padding: 16px 12px; text-align: center; border-radius: 8px; }
+.tit2 { font-size: 14px; font-weight: 700; text-transform: uppercase; }
+.price { font-size: 26px; font-weight: 800; margin: 8px 0; }
+.btn { background: var(--text); color: var(--bg); border: none; padding: 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; width: 100%; border-radius: 4px; margin-top: 12px; }
+.list { padding: 0 10px; }
+.tip { background: var(--card); border: 1px solid var(--border); padding: 10px; margin-bottom: 6px; border-radius: 6px; position: relative; }
+.tip.vip { border-color: var(--text); }
+.tip.won { border-left: 3px solid var(--text); }
+.tip.lost { border-left: 3px solid var(--gray); opacity: 0.6; }
+.vipTag { position: absolute; top: 0; right: 0; background: var(--text); color: var(--bg); font-size: 6px; padding: 2px 5px; font-weight: 700; border-radius: 0 6px 0 3px; }
+.leag { font-size: 8px; color: var(--gray); text-transform: uppercase; }
+.match { font-size: 12px; font-weight: 600; margin: 4px 0 8px; }
+.pickBox { display: flex; justify-content: space-between; align-items: center; background: var(--bg); padding: 8px; border-radius: 4px; border: 1px solid var(--border); }
+.pick { font-size: 9px; color: var(--gray); text-transform: uppercase; }
+.pickVal { font-size: 12px; font-weight: 600; }
+.odds { background: var(--card); border: 1px solid var(--text); padding: 3px 8px; font-weight: 700; font-size: 11px; border-radius: 3px; }
+.meta { display: flex; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 9px; color: var(--gray); }
+.stat1 { text-transform: uppercase; font-size: 7px; padding: 2px 4px; background: var(--card); border-radius: 2px; }
+.nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 6px 0; z-index: 1000; }
+.navItm { color: var(--gray); text-decoration: none; font-size: 8px; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.navItm.act { color: var(--text); }
+.navIco { font-size: 14px; }
+.sp { height: 50px; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">BETTING TIPS</div>
-      <div class="subtitle">Professional Predictions</div>
-    <div class="stats-bar">
-      <div class="stat-box"><div class="stat-value" id="profitValue">+142</div><div class="stat-label">Profit</div>
-      <div class="stat-box"><div class="stat-value" id="dateValue">--</div><div class="stat-label">Date</div>
-      <div class="stat-box"><div class="stat-value" id="activeValue">12</div><div class="stat-label">Active</div>
-    </div>
-    <div class="section-header"><div class="section-title">Free</div><span class="badge badge-outline">FREE</span></div>
-    <div class="category-grid">
-      <div class="category-card" onclick="filterTips('Daily Sure')"><div class="category-icon">🔥</div><div class="category-name">Daily</div><div class="category-count" id="dailyCount">3</div>
-      <div class="category-card" onclick="filterTips('Football')"><div class="category-icon">⚽</div><div class="category-name">Football</div><div class="category-count" id="footballCount">5</div>
-      <div class="category-card" onclick="filterTips('Basketball')"><div class="category-icon">🏀</div><div class="category-name">Basket</div><div class="category-count" id="basketballCount">2</div>
-      <div class="category-card" onclick="filterTips('Tennis')"><div class="category-icon">🎾</div><div class="category-name">Tennis</div><div class="category-count" id="tennisCount">2</div>
-      <div class="category-card" onclick="filterTips('Over-Under')"><div class="category-icon">📊</div><div class="category-name">O/U</div><div class="category-count" id="ouCount">2</div>
-      <div class="category-card" onclick="filterTips('Single')"><div class="category-icon">🎯</div><div class="category-name">Single</div><div class="category-count" id="singleCount">4</div>
-    </div>
-    <div class="section-header"><div class="section-title">VIP</div><span class="badge">PREMIUM</span></div>
-    <div class="category-grid">
-      <div class="category-card" onclick="checkPremium('Special VIP')"><div class="category-icon">⭐</div><div class="category-name">Special</div><div class="category-count">🔒</div>
-      <div class="category-card" onclick="checkPremium('Fixed VIP')"><div class="category-icon">🔒</div><div class="category-name">Fixed</div><div class="category-count">🔒</div>
-      <div class="category-card" onclick="checkPremium('Correct Score')"><div class="category-icon">🎯</div><div class="category-name">Score</div><div class="category-count">🔒</div>
-    </div>
-    <div class="premium-banner" id="premiumBanner">
-      <div class="premium-title">Upgrade to VIP</div>
-      <div class="premium-price">$29.99</div>
-      <ul class="premium-features"><li>All VIP categories</li><li>Higher stakes</li><li>75%+ win rate</li></ul>
-      <button class="btn-primary" onclick="upgradePremium()">Get Premium</button>
-    </div>
-    <div class="section-header"><div class="section-title">Tips</div><span style="color: var(--text-secondary); font-size: 11px;" onclick="showAllTips()">View All →</span></div>
-    <div class="tips-list" id="tipsList"></div>
-  <div class="bottom-nav">
-    <a href="#" class="nav-item active" onclick="showSection('home')"><span class="nav-icon">⌂</span><span>Home</span></a>
-    <a href="#" class="nav-item" onclick="showSection('tips')"><span class="nav-icon">⚽</span><span>Tips</span></a>
-    <a href="#" class="nav-item" onclick="showSection('history')"><span class="nav-icon">◈</span><span>History</span></a>
-    <a href="#" class="nav-item" onclick="showSection('profile')"><span class="nav-icon">○</span><span>Profile</span></a>
+<div class="wrap">
+  <div class="head">
+    <div class="logo">BETTING TIPS</div>
+    <div class="sub">Professional Predictions</div>
+  <div class="stats">
+    <div class="stat"><div class="val" id="profitValue">+142</div><div class="lbl">Profit</div>
+    <div class="stat"><div class="val" id="dateValue">--</div><div class="lbl">Date</div>
+    <div class="stat"><div class="val" id="activeValue">12</div><div class="lbl">Active</div>
   </div>
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
-    tg.setBackgroundColor("#000000");
-    tg.setHeaderColor("#000000");
-    function getTodayDate() { const today = new Date(); return today.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
-    document.getElementById('dateValue').textContent = getTodayDate();
-    const tips = [
-      { id: 1, sport: "Football", league: "Premier", match: "Man City vs Liverpool", prediction: "Over 2.5 Goals", odds: "1.85", stake: 3, confidence: 72, premium: false, status: "pending", date: "Today" },
-      { id: 2, sport: "Basketball", league: "NBA", match: "Lakers vs Warriors", prediction: "Lakers -4.5", odds: "1.91", stake: 2, confidence: 65, premium: false, status: "won", result: "Won", date: "Yesterday" },
-      { id: 3, sport: "Tennis", league: "ATP", match: "Djokovic vs Nadal", prediction: "Djokovic Win", odds: "1.75", stake: 4, confidence: 78, premium: false, status: "pending", date: "Today" },
-      { id: 4, sport: "Football", league: "La Liga", match: "Real vs Barcelona", prediction: "Real Madrid Win", odds: "2.10", stake: 5, confidence: 80, premium: true, status: "pending", date: "Today" },
-      { id: 5, sport: "Basketball", league: "EuroLeague", match: "Barcelona vs Real", prediction: "Barcelona -3.5", odds: "1.88", stake: 3, confidence: 68, premium: false, status: "pending", date: "Today" },
-      { id: 6, sport: "Tennis", league: "WTA", match: "Swiatek vs Rybakina", prediction: "Over 20.5 Games", odds: "1.80", stake: 2, confidence: 62, premium: false, status: "lost", result: "Lost", date: "Yesterday" },
-    ];
-    function updateCategoryCounts() {
-      document.getElementById('dailyCount').textContent = tips.filter(t => t.status === 'pending').length;
-      document.getElementById('footballCount').textContent = tips.filter(t => t.sport === 'Football').length;
-      document.getElementById('basketballCount').textContent = tips.filter(t => t.sport === 'Basketball').length;
-      document.getElementById('tennisCount').textContent = tips.filter(t => t.sport === 'Tennis').length;
-      document.getElementById('ouCount').textContent = tips.filter(t => t.prediction.includes('Over') || t.prediction.includes('Under')).length;
-      document.getElementById('singleCount').textContent = tips.filter(t => !t.premium).length;
-      document.getElementById('activeValue').textContent = tips.filter(t => t.status === 'pending').length;
-    }
-    updateCategoryCounts();
-    function renderTips(tipList) {
-      const container = document.getElementById("tipsList");
-      if (tipList.length === 0) { container.innerHTML = '<div class="empty-state">No tips available</div>'; return; }
-      container.innerHTML = tipList.map((tip) => {
-        const isLocked = tip.premium && !isPremium;
-        const statusClass = tip.status === "won" ? "won" : tip.status === "lost" ? "lost" : "";
-        const premiumClass = tip.premium ? "premium" : "";
-        return '<div class="tip-card ' + statusClass + ' ' + premiumClass + '">' + (tip.premium ? '<span class="premium-tag">VIP</span>' : '') + '<div class="tip-league">' + tip.league + ' • ' + tip.date + '</div>' + '<div class="tip-match">' + tip.match + '</div>' + '<div class="tip-prediction-box">' + '<div><div class="prediction-label">Pick</div><div class="prediction-value">' + (isLocked ? '🔒 Locked' : tip.prediction) + '</div>' + '<div class="odds-box">@' + tip.odds + '</div>' + '</div>' + '<div class="tip-meta">' + '<span>' + tip.confidence + '%</span>' + '<span>' + tip.stake + '/10</span>' + '<span class="status status-' + tip.status + '">' + tip.status + '</span>' + '</div>';
-      }).join("");
-    }
-    let isPremium = false;
-    function filterTips(category) {
-      const filtered = tips.filter((t) => {
-        if (category === 'Daily Sure') return t.status === 'pending';
-        if (category === 'Football') return t.sport === 'Football';
-        if (category === 'Basketball') return t.sport === 'Basketball';
-        if (category === 'Tennis') return t.sport === 'Tennis';
-        if (category === 'Over-Under') return t.prediction.includes('Over') || t.prediction.includes('Under');
-        if (category === 'Single') return !t.premium;
-        return true;
-      });
-      renderTips(filtered);
-    }
-    function checkPremium(category) { if (!isPremium) { tg.showPopup({ title: "Premium Required", message: "Upgrade to VIP to access.", buttons: [{ id: "upgrade", type: "default", text: "Upgrade" }, { type: "cancel" }] }); } }
-    function upgradePremium() { tg.sendData(JSON.stringify({ action: "upgrade_premium" })); tg.close(); }
-    function showAllTips() { renderTips(tips); }
-    function showSection(section) {
-      document.querySelectorAll(".nav-item").forEach((el) => el.classList.remove("active"));
-      event.target.closest(".nav-item").classList.add("active");
-      if (section === "home") renderTips(tips);
-      if (section === "tips") renderTips(tips.filter(t => t.status === "pending"));
-      if (section === "history") renderTips(tips.filter(t => t.status !== "pending"));
-    }
-    renderTips(tips);
-  </script>
+  <div class="sec"><div class="tit">Free</div><span class="badge badge2">FREE</span></div>
+  <div class="grid">
+    <div class="cat" onclick="filterTips('Daily Sure')"><div class="ico">🔥</div><div class="name">Daily</div><div class="num" id="dailyCount">3</div>
+    <div class="cat" onclick="filterTips('Football')"><div class="ico">⚽</div><div class="name">Football</div><div class="num" id="footballCount">5</div>
+    <div class="cat" onclick="filterTips('Basketball')"><div class="ico">🏀</div><div class="name">Basket</div><div class="num" id="basketballCount">2</div>
+    <div class="cat" onclick="filterTips('Tennis')"><div class="ico">🎾</div><div class="name">Tennis</div><div class="num" id="tennisCount">2</div>
+    <div class="cat" onclick="filterTips('Over-Under')"><div class="ico">📊</div><div class="name">O/U</div><div class="num" id="ouCount">2</div>
+    <div class="cat" onclick="filterTips('Single')"><div class="ico">🎯</div><div class="name">Single</div><div class="num" id="singleCount">4</div>
+  </div>
+  <div class="sec"><div class="tit">VIP</div><span class="badge">PREMIUM</span></div>
+  <div class="grid2">
+    <div class="cat" onclick="checkPremium('Special VIP')"><div class="ico">⭐</div><div class="name">Special</div><div class="num">🔒</div>
+    <div class="cat" onclick="checkPremium('Fixed VIP')"><div class="ico">🔒</div><div class="name">Fixed</div><div class="num">🔒</div>
+    <div class="cat" onclick="checkPremium('Correct Score')"><div class="ico">🎯</div><div class="name">Score</div><div class="num">🔒</div>
+  </div>
+  <div class="banner">
+    <div class="tit2">Upgrade to VIP</div>
+    <div class="price">$29.99</div>
+    <button class="btn" onclick="upgradePremium()">Get Premium</button>
+  </div>
+  <div class="sec"><div class="tit">Tips</div><span style="color:var(--gray);font-size:10px;" onclick="showAllTips()">View All →</span></div>
+  <div class="list" id="tipsList"></div>
+  <div class="sp"></div>
+<div class="nav">
+  <a href="#" class="navItm act" onclick="showSection('home')"><span class="navIco">⌂</span><span>Home</span></a>
+  <a href="#" class="navItm" onclick="showSection('tips')"><span class="navIco">⚽</span><span>Tips</span></a>
+  <a href="#" class="navItm" onclick="showSection('history')"><span class="navIco">◈</span><span>History</span></a>
+  <a href="#" class="navItm" onclick="showSection('profile')"><span class="navIco">○</span><span>Profile</span></a>
+</div>
+<script type="text/javascript">
+var tg=window.Telegram.WebApp;tg.expand();tg.ready();
+tg.setBackgroundColor("#000000");tg.setHeaderColor("#000000");
+function getTodayDate(){var t=new Date();return t.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})}
+document.getElementById("dateValue").innerHTML=getTodayDate();
+var tips=[
+{id:1,sport:"Football",league:"Premier",match:"Man City vs Liverpool",prediction:"Over 2.5 Goals",odds:"1.85",stake:3,confidence:72,premium:false,status:"pending",date:"Today"},
+{id:2,sport:"Basketball",league:"NBA",match:"Lakers vs Warriors",prediction:"Lakers -4.5",odds:"1.91",stake:2,confidence:65,premium:false,status:"won",result:"Won",date:"Yesterday"},
+{id:3,sport:"Tennis",league:"ATP",match:"Djokovic vs Nadal",prediction:"Djokovic Win",odds:"1.75",stake:4,confidence:78,premium:false,status:"pending",date:"Today"},
+{id:4,sport:"Football",league:"La Liga",match:"Real vs Barcelona",prediction:"Real Madrid Win",odds:"2.10",stake:5,confidence:80,premium:true,status:"pending",date:"Today"},
+{id:5,sport:"Basketball",league:"EuroLeague",match:"Barcelona vs Real",prediction:"Barcelona -3.5",odds:"1.88",stake:3,confidence:68,premium:false,status:"pending",date:"Today"},
+{id:6,sport:"Tennis",league:"WTA",match:"Swiatek vs Rybakina",prediction:"Over 20.5 Games",odds:"1.80",stake:2,confidence:62,premium:false,status:"lost",result:"Lost",date:"Yesterday"}];
+function updateCategoryCounts(){document.getElementById("dailyCount").innerHTML=tips.filter(function(t){return t.status==="pending"}).length;document.getElementById("footballCount").innerHTML=tips.filter(function(t){return t.sport==="Football"}).length;document.getElementById("basketballCount").innerHTML=tips.filter(function(t){return t.sport==="Basketball"}).length;document.getElementById("tennisCount").innerHTML=tips.filter(function(t){return t.sport==="Tennis"}).length;document.getElementById("ouCount").innerHTML=tips.filter(function(t){return t.prediction.indexOf("Over")>-1||t.prediction.indexOf("Under")>-1}).length;document.getElementById("singleCount").innerHTML=tips.filter(function(t){return t.premium===false}).length;document.getElementById("activeValue").innerHTML=tips.filter(function(t){return t.status==="pending"}).length}
+updateCategoryCounts();
+function renderTips(tipList){var c=document.getElementById("tipsList");if(tipList.length===0){c.innerHTML='<div class="tip">No tips available</div>';return}c.innerHTML=tipList.map(function(t){var l=t.premium&&!isPremium;var sc=t.status==="won"?"won":t.status==="lost"?"lost":"";var pc=t.premium?"vip":"";return'<div class="tip '+sc+' '+pc+'">'+(t.premium?'<span class="vipTag">VIP</span>':'')+'<div class="leag">'+t.league+" • "+t.date+'</div><div class="match">'+t.match+'</div><div class="pickBox"><div><div class="pick">Pick</div><div class="pickVal">'+(l?"🔒 Locked":t.prediction)+'</div><div class="odds">@'+t.odds+'</div><div class="meta"><span>'+t.confidence+'%</span><span>'+t.stake+'/10</span><span class="stat1">'+t.status+'</span></div>'}).join("")}
+var isPremium=false;
+function filterTips(category){var f=tips.filter(function(t){if(category==="Daily Sure")return t.status==="pending";if(category==="Football")return t.sport==="Football";if(category==="Basketball")return t.sport==="Basketball";if(category==="Tennis")return t.sport==="Tennis";if(category==="Over-Under")return t.prediction.indexOf("Over")>-1||t.prediction.indexOf("Under")>-1;if(category==="Single")return!t.premium;return true});renderTips(f)}
+function checkPremium(category){if(!isPremium){tg.showPopup({title:"Premium Required",message:"Upgrade to VIP to access.",buttons:[{id:"upgrade",type:"default",text:"Upgrade"},{type:"cancel"}]})}}
+function upgradePremium(){tg.sendData(JSON.stringify({action:"upgrade_premium"}));tg.close()}
+function showAllTips(){renderTips(tips)}
+function showSection(section){document.querySelectorAll(".navItm").forEach(function(e){e.classList.remove("act")});event.target.closest(".navItm").classList.add("act");if(section==="home")renderTips(tips);if(section==="tips")renderTips(tips.filter(function(t){return t.status==="pending"}));if(section==="history")renderTips(tips.filter(function(t){return t.status!=="pending"}))}
+renderTips(tips);
+</script>
 </body>
 </html>
